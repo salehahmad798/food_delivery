@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { serverUrl } from "../App";
 
 const SignUp = () => {
@@ -32,10 +33,16 @@ const SignUp = () => {
       );
 
       console.log(res.data);
+      alert("Signup Successful!");
 
     } catch (error) {
       console.log(error.response?.data || error.message);
+      alert("Signup Failed!");
     }
+  };
+
+  const handleGoogleSignup = () => {
+    window.location.href = `${serverUrl}/api/auth/google`;
   };
 
   return (
@@ -49,6 +56,7 @@ const SignUp = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
+          {/* Full Name */}
           <input
             type="text"
             name="fullName"
@@ -56,8 +64,10 @@ const SignUp = () => {
             value={formData.fullName}
             onChange={handleChange}
             className="w-full p-2 border rounded-lg"
+            required
           />
 
+          {/* Email */}
           <input
             type="email"
             name="email"
@@ -65,8 +75,10 @@ const SignUp = () => {
             value={formData.email}
             onChange={handleChange}
             className="w-full p-2 border rounded-lg"
+            required
           />
 
+          {/* Mobile */}
           <input
             type="text"
             name="mobile"
@@ -74,8 +86,10 @@ const SignUp = () => {
             value={formData.mobile}
             onChange={handleChange}
             className="w-full p-2 border rounded-lg"
+            required
           />
 
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -84,6 +98,7 @@ const SignUp = () => {
               value={formData.password}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg"
+              required
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
@@ -93,30 +108,60 @@ const SignUp = () => {
             </span>
           </div>
 
-  
-          {/* Role */}
-          <div className="flex gap-2">  
+          {/* Role Selection */}
+          <div className="flex gap-2">
             {["user", "admin", "deliveryBoy"].map((role) => (
               <button
                 type="button"
                 key={role}
                 onClick={() => handleRoleChange(role)}
-                className={`flex-1 py-2 border rounded-lg ${formData.role === role ? "bg-orange-500 text-white" : ""
-                  }`}
+                className={`flex-1 py-2 border rounded-lg ${
+                  formData.role === role
+                    ? "bg-orange-500 text-white"
+                    : "bg-white"
+                }`}
               >
                 {role}
               </button>
             ))}
           </div>
 
-
-
+          {/* Sign Up Button */}
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-2 rounded-lg"
+            className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
           >
             Sign Up
           </button>
+
+          {/* Divider */}
+          <div className="flex items-center gap-2">
+            <hr className="flex-1 border-gray-300" />
+            <span className="text-gray-400 text-sm">OR</span>
+            <hr className="flex-1 border-gray-300" />
+          </div>
+
+          {/* Google Signup */}
+          <button
+            type="button"
+            onClick={handleGoogleSignup}
+            className="w-full border border-gray-300 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition"
+          >
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="google"
+              className="w-5 h-5"
+            />
+            Sign up with Google
+          </button>
+
+          {/* Sign In Link */}
+          <p className="text-center text-sm mt-4">
+            Already have an account?{" "}
+            <Link to="/signin" className="text-orange-500 font-medium">
+              Sign In
+            </Link>
+          </p>
 
         </form>
       </div>
